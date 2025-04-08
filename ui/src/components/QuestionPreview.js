@@ -1,7 +1,7 @@
 import React from "react";
-import { Trash2, Type, List, Text, AlignLeft } from "lucide-react";
+import { Trash2, Type, List, Text, AlignLeft, Edit2 } from "lucide-react";
 
-const QuestionPreview = ({ questions, onRemoveQuestion }) => {
+const QuestionPreview = ({ questions, onRemoveQuestion, onEditQuestion }) => {
   const getQuestionTypeIcon = (type) => {
     switch (type) {
       case "multiple_choice":
@@ -22,9 +22,9 @@ const QuestionPreview = ({ questions, onRemoveQuestion }) => {
       case "multiple_choice":
         return (
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 pr-20">
               {getQuestionTypeIcon(question.type)}
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-gray-900 flex-1">
                 {question.text}
               </p>
             </div>
@@ -51,9 +51,9 @@ const QuestionPreview = ({ questions, onRemoveQuestion }) => {
       case "checkbox_list":
         return (
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 pr-20">
               {getQuestionTypeIcon(question.type)}
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-gray-900 flex-1">
                 {question.text}
               </p>
             </div>
@@ -79,28 +79,36 @@ const QuestionPreview = ({ questions, onRemoveQuestion }) => {
       case "short_text":
         return (
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 pr-20">
               {getQuestionTypeIcon(question.type)}
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-gray-900 flex-1">
                 {question.text}
               </p>
             </div>
             <div className="pl-7">
-              <input type="text" placeholder="Your answer" className="input" />
+              <input
+                type="text"
+                placeholder="Your answer"
+                className="input w-full px-4 py-2"
+              />
             </div>
           </div>
         );
       case "long_text":
         return (
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 pr-20">
               {getQuestionTypeIcon(question.type)}
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-gray-900 flex-1">
                 {question.text}
               </p>
             </div>
             <div className="pl-7">
-              <textarea placeholder="Your answer" rows="4" className="input" />
+              <textarea
+                placeholder="Your answer"
+                rows="4"
+                className="input w-full px-4 py-2"
+              />
             </div>
           </div>
         );
@@ -125,15 +133,23 @@ const QuestionPreview = ({ questions, onRemoveQuestion }) => {
           {questions.map((question) => (
             <div
               key={question.id}
-              className="relative bg-white rounded-lg border border-gray-200 p-6 hover:border-primary-300 transition-colors"
+              className="group relative bg-white rounded-lg border border-gray-200 p-6 hover:border-primary-300 transition-colors"
             >
               {renderQuestion(question)}
-              <button
-                className="absolute top-4 right-4 btn btn-danger p-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={() => onRemoveQuestion(question.id)}
-              >
-                <Trash2 size={20} />
-              </button>
+              <div className="absolute top-4 right-4 flex gap-2">
+                <button
+                  className="btn btn-secondary p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => onEditQuestion(question)}
+                >
+                  <Edit2 size={20} />
+                </button>
+                <button
+                  className="btn btn-danger p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => onRemoveQuestion(question.id)}
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
             </div>
           ))}
         </div>

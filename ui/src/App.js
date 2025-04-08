@@ -11,8 +11,10 @@ function App() {
               Survey Design Tool
             </h1>
             <div className="flex items-center space-x-4">
-              <button className="btn btn-primary">Save Survey</button>
-              <button className="btn bg-gray-200 text-gray-700 hover:bg-gray-300">
+              <button className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
+                Save Survey
+              </button>
+              <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
                 Preview
               </button>
             </div>

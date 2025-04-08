@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Trash2, Type, List, Text, AlignLeft } from "lucide-react";
 
 const QUESTION_TYPES = {
@@ -8,12 +8,20 @@ const QUESTION_TYPES = {
   LONG_TEXT: "long_text",
 };
 
-const QuestionDesigner = ({ onAddQuestion }) => {
+const QuestionDesigner = ({ onAddQuestion, editingQuestion }) => {
   const [questionType, setQuestionType] = useState(
     QUESTION_TYPES.MULTIPLE_CHOICE
   );
   const [questionText, setQuestionText] = useState("");
   const [options, setOptions] = useState([""]);
+
+  useEffect(() => {
+    if (editingQuestion) {
+      setQuestionType(editingQuestion.type);
+      setQuestionText(editingQuestion.text);
+      setOptions(editingQuestion.options || [""]);
+    }
+  }, [editingQuestion]);
 
   const handleAddOption = () => {
     setOptions([...options, ""]);
@@ -42,8 +50,11 @@ const QuestionDesigner = ({ onAddQuestion }) => {
           : undefined,
     };
     onAddQuestion(newQuestion);
-    setQuestionText("");
-    setOptions([""]);
+    if (!editingQuestion) {
+      setQuestionText("");
+      setOptions([""]);
+      setQuestionType(QUESTION_TYPES.MULTIPLE_CHOICE);
+    }
   };
 
   const getQuestionTypeIcon = (type) => {
@@ -103,7 +114,7 @@ const QuestionDesigner = ({ onAddQuestion }) => {
             onChange={(e) => setQuestionText(e.target.value)}
             placeholder="Enter your question"
             required
-            className="input"
+            className="input w-full px-4 py-2"
           />
         </div>
 
@@ -122,7 +133,7 @@ const QuestionDesigner = ({ onAddQuestion }) => {
                     onChange={(e) => handleOptionChange(index, e.target.value)}
                     placeholder={`Option ${index + 1}`}
                     required
-                    className="input flex-1"
+                    className="input flex-1 px-4 py-2"
                   />
                   <button
                     type="button"
@@ -138,7 +149,7 @@ const QuestionDesigner = ({ onAddQuestion }) => {
             <button
               type="button"
               onClick={handleAddOption}
-              className="btn btn-primary flex items-center gap-2 w-full"
+              className="btn btn-primary flex items-center gap-2 w-full px-4 py-2"
             >
               <Plus size={20} />
               Add Option
@@ -148,10 +159,10 @@ const QuestionDesigner = ({ onAddQuestion }) => {
 
         <button
           type="submit"
-          className="btn btn-primary w-full flex items-center justify-center gap-2"
+          className="btn btn-primary w-full flex items-center justify-center gap-2 px-4 py-2"
         >
           <Plus size={20} />
-          Add Question
+          {editingQuestion ? "Update Question" : "Add Question"}
         </button>
       </form>
     </div>
